@@ -48,14 +48,14 @@ public class MainActivity extends IntroActivity {
         );
 
         addSlide(new FragmentSlide.Builder()
-                .background(android.R.color.holo_orange_light)
+                .background(android.R.color.holo_purple)
                 .fragment(R.layout.intro_3)
                 .build()
         );
 
 
         addSlide(new FragmentSlide.Builder()
-                .background(android.R.color.holo_orange_light)
+                .background(android.R.color.holo_red_light)
                 .fragment(R.layout.intro_4)
                 .build()
         );
