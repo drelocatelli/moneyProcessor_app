@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+
+import android.content.Intent;
 import android.os.StrictMode;
 import java.net.URL;
 
@@ -24,7 +26,7 @@ public class MainActivity extends IntroActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // api permisions
+        // external api permisions
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -32,6 +34,7 @@ public class MainActivity extends IntroActivity {
 
         // Slides
 
+        // botoes volta e avança
         setButtonBackVisible(false);
         setButtonNextVisible(false);
 
@@ -53,17 +56,30 @@ public class MainActivity extends IntroActivity {
                 .build()
         );
 
-
         addSlide(new FragmentSlide.Builder()
                 .background(android.R.color.holo_purple)
                 .fragment(R.layout.intro_4)
+                // nao fechar apos ultimo slide
+                .canGoForward(true)
+                .build()
+        );
+
+        addSlide(new FragmentSlide.Builder()
+                .background(android.R.color.holo_blue_light)
+                .fragment(R.layout.intro_cadastro)
                 // nao fechar apos ultimo slide
                 .canGoForward(false)
                 .build()
         );
 
+    }
 
+    public void btEntrar(View view) {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 
+    public void btCadastrar(View view) {
+        startActivity(new Intent(this, CadastroActivity.class));
     }
 
 }
