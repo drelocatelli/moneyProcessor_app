@@ -2,11 +2,8 @@ package com.example.moneyprocessor.Service;
 
 import com.example.moneyprocessor.Security.DBConnection;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
-import java.io.IOException;
-
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,6 +16,7 @@ public class UserService {
     private static String webservice = String.format("%s/rest/v1/users", DBConnection.dbHost);
 
     public static boolean emailExists(String email) throws Exception {
+        // api
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
         Request request = new Request.Builder()
@@ -35,6 +33,36 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public static boolean loginUsuarioDB(String email, String senha) throws Exception {
+        // api
+
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        String service = String.format("%s?email=eq.%s&senha=eq.%s", webservice, email, senha);
+
+        Request request = new Request.Builder()
+                .url(service)
+                .addHeader("apikey", DBConnection.apiKey)
+                .addHeader("Authorization", DBConnection.dbJWT)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Prefer", "return=minimal")
+                .build();
+        Response res = client.newCall(request).execute();
+
+        System.out.println(service);
+
+        String responseData = res.body().string();
+
+        JSONArray response = new JSONArray(responseData);
+
+        if(response.length() == 1) {
+            return true;
+        }
+
+        return false;
+
     }
 
     public static boolean cadastroUsuarioDB(String nome, String email, String senha) throws Exception {
@@ -56,11 +84,11 @@ public class UserService {
                 .build();
         Response response = client.newCall(request).execute();
 
-        if(response.code() == 200) {
+        if(response.code() == 201) {
             return true;
+        }else {
+            return false;
         }
-
-        return false;
 
     }
 

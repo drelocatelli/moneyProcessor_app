@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.StrictMode;
 import java.net.URL;
 
@@ -72,6 +73,22 @@ public class MainActivity extends IntroActivity {
                 .build()
         );
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        verificaUsuarioLogado();
+
+    }
+
+    public void verificaUsuarioLogado() {
+        SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+        if((pref.getString("email", null) != null)) {
+            // abre tela principal
+            startActivity(new Intent(this, PrincipalActivity.class));
+            finish();
+        }
     }
 
     public void btEntrar(View view) {

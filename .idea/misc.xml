@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_cadastro.xml" value="0.25" />
-        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_main.xml" value="0.2826086956521739" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_principal.xml" value="0.22" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/fragment_first.xml" value="0.15364583333333334" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/intro_1.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/intro_cadastro.xml" value="0.25" />
       </map>
