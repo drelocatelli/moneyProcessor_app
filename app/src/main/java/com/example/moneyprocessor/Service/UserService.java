@@ -4,6 +4,8 @@ import com.example.moneyprocessor.Security.DBConnection;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -14,13 +16,30 @@ import okhttp3.Response;
 
 public class UserService {
 
-    public static void cadastroUsuarioDB(String nome, String email, String senha) throws Exception {
+    private static String webservice = String.format("%s/rest/v1/users", DBConnection.dbHost);
 
-        System.out.println(DBConnection.dbHost);
-        System.out.println(String.format("%s, %s, %s" ,nome, email, senha));
+    public static boolean emailExists(String email) throws Exception {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+        Request request = new Request.Builder()
+                .url(webservice+"?select=email")
+                .addHeader("apikey", DBConnection.apiKey)
+                .addHeader("Authorization", DBConnection.dbJWT)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Prefer", "return=minimal")
+                .build();
+        Response response = client.newCall(request).execute();
+
+        if (response.body().string().contains(email)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean cadastroUsuarioDB(String nome, String email, String senha) throws Exception {
 
         // api
-        String webservice = String.format("%s/rest/v1/users", DBConnection.dbHost);
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         MediaType mediaType = MediaType.parse("application/json");
@@ -30,13 +49,18 @@ public class UserService {
         Request request = new Request.Builder()
                 .url(webservice)
                 .method("POST", body)
-                .addHeader("apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNzcwNjUxNSwiZXhwIjoxOTUzMjgyNTE1fQ.Su6U126NNBdUpY-0tj2GY1yVwA_Yrk9kEtIHqIqa2wg")
-                .addHeader("Authorization", "0784f80f-087d-4e7a-8c9e-cef27b30c6ad")
+                .addHeader("apikey", DBConnection.apiKey)
+                .addHeader("Authorization", DBConnection.dbJWT)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Prefer", "return=minimal")
                 .build();
         Response response = client.newCall(request).execute();
 
+        if(response.code() == 200) {
+            return true;
+        }
+
+        return false;
 
     }
 
