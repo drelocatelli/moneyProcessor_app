@@ -3,6 +3,7 @@ package com.example.moneyprocessor.Service;
 import com.example.moneyprocessor.Security.DBConnection;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -33,6 +34,38 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public static String getNomeByEmail(String email) {
+        // api
+
+        try {
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            String service = String.format("%s?email=eq.%s&select=nome", webservice, email);
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response res = client.newCall(request).execute();
+
+            String responseData = res.body().string();
+
+            JSONObject resArray = (JSONObject) new JSONArray(responseData).get(0);
+            String response = resArray.getString("nome");
+
+            return response;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     public static boolean loginUsuarioDB(String email, String senha) throws Exception {

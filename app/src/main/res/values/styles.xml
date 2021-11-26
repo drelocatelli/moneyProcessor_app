@@ -8,4 +8,28 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- basic theme without actionBar -->
+    <style name="despesaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <!-- theme despesas -->
+    <style name="despesaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorPrimary">#ff6f00</item>
+        <item name="android:colorPrimaryDark">#c43e00</item>
+    </style>
+
+    <!-- theme receitas -->
+    <style name="receitaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorPrimary">#8bc34a</item>
+        <item name="android:colorPrimaryDark">#5a9216</item>
+    </style>
+
 </resources>

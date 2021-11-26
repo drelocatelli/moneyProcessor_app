@@ -77,7 +77,9 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("email", email);
-        editor.apply();
+        String nome = UserService.getNomeByEmail(email);
+        editor.putString("nome", nome);
+        editor.commit();
 
         // abre tela principal
         startActivity(new Intent(this, PrincipalActivity.class));

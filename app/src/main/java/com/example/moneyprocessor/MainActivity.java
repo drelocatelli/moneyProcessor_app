@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.moneyprocessor.Service.UserService;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
@@ -82,12 +83,27 @@ public class MainActivity extends IntroActivity {
 
     }
 
+    public void atualizaCache(SharedPreferences pref) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("nome", UserService.getNomeByEmail(pref.getString("email", null)));
+        editor.commit();
+    }
+
     public void verificaUsuarioLogado() {
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
-        if((pref.getString("email", null) != null)) {
+
+        boolean hasCache = (pref.getString("email", null) != null) && (pref.getString("nome", null) != null);
+
+        if(hasCache) {
+            // atualiza cache
+            atualizaCache(pref);
+
             // abre tela principal
-            startActivity(new Intent(this, PrincipalActivity.class));
-            finish();
+            if(UserService.getNomeByEmail(pref.getString("email", null)) != null){
+                startActivity(new Intent(this, PrincipalActivity.class));
+                finish();
+            }
+
         }
     }
 
