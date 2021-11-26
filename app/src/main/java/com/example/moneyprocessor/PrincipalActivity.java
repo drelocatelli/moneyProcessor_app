@@ -18,10 +18,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.moneyprocessor.Service.TransactionService;
 import com.example.moneyprocessor.Service.UserService;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +32,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private MaterialCalendarView calendarView;
+    private TextView saldoEl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,10 @@ public class PrincipalActivity extends AppCompatActivity {
         // check user
         checkUserandLogout();
 
+        // obtem saldo
+        saldoEl = findViewById(R.id.saldoEl);
+        getSaldo();
+
         calendarView = findViewById(R.id.calendarView);
 
         // calendar handling
@@ -56,9 +63,9 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView.setTitleMonths(new CharSequence[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"});
 
         calendarView.setWeekDayLabels(new CharSequence[] {"Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"});
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 String mes = String.valueOf(date.getMonth() + 1);
                 String dia = String.valueOf(date.getDay());
                 mes = (Integer.valueOf(mes) <= 9 ? "0"+mes : mes);
@@ -68,6 +75,19 @@ public class PrincipalActivity extends AppCompatActivity {
                 System.out.println(data);
             }
         });
+    }
+
+    public void getSaldo() {
+        SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+        String userId = UserService.getUserIdByEmail(pref.getString("email", null));
+
+        double receitas = Double.parseDouble(TransactionService.getReceitasTotalByUserId(userId));
+        double despesas = Double.parseDouble(TransactionService.getDespesasTotalByUserId(userId));
+
+        String saldo = String.format("Saldo: R$ %.2f", (receitas - despesas));
+
+        saldoEl.setText(saldo);
+
     }
 
     public void limpaCache() {

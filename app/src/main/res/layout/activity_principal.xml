@@ -55,11 +55,21 @@
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                fab:mcv_selectionColor="@color/colorAccent"
                 app:mcv_tileSize="50dp"
+                fab:mcv_selectionColor="@color/colorAccent"
                 fab:mcv_showOtherDates="all">
 
             </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerMovimentos"
+                android:layout_width="338dp"
+                android:layout_height="499dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -72,11 +82,28 @@
             android:outlineSpotShadowColor="#00C84141"
             android:shadowColor="#00C84141"
             android:text="Sair"
-            android:textColor="#554F4F"
+            android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.984"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/saldoEl"
+            android:layout_width="352dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="135dp"
+            android:text="saldo"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,8 +118,8 @@
         fab:menu_animationDelayPerItem="50"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#4e342e"
-        fab:menu_colorPressed="#4e342e"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccent"
         fab:menu_colorRipple="#99FFFFFF"
         fab:menu_fab_size="normal"
         fab:menu_icon="@drawable/fab_add"

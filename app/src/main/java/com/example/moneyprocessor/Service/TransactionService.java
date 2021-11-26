@@ -1,8 +1,16 @@
 package com.example.moneyprocessor.Service;
 
+import com.example.moneyprocessor.DTO.TransactionDTO;
 import com.example.moneyprocessor.Security.DBConnection;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -13,6 +21,92 @@ import okhttp3.Response;
 public class TransactionService {
 
     private static String webservice = String.format("%s/rest/v1/transaction", DBConnection.dbHost);
+
+    public static String getDespesasTotalByUserId(String id) {
+        // api
+
+        try {
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            String service = String.format("%s?user_id=eq.%s&type=eq.d&select=value", webservice, id);
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response res = client.newCall(request).execute();
+            String responseData = res.body().string();
+
+            JSONArray resArray = new JSONArray(responseData);
+            JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
+
+            Gson gson= new Gson();
+            Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
+            List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
+
+            int quantity = resArray.length();
+
+            double sum = 0;
+
+            for(TransactionDTO dto : obj) {
+                sum += Double.valueOf(dto.getValue());
+            }
+
+            return String.valueOf(sum);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static String getReceitasTotalByUserId(String id) {
+        // api
+
+        try {
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            String service = String.format("%s?user_id=eq.%s&type=eq.r&select=value", webservice, id);
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response res = client.newCall(request).execute();
+            String responseData = res.body().string();
+
+            JSONArray resArray = new JSONArray(responseData);
+            JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
+
+            Gson gson= new Gson();
+            Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
+            List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
+
+            int quantity = resArray.length();
+
+            double sum = 0;
+
+            for(TransactionDTO dto : obj) {
+                sum += Double.valueOf(dto.getValue());
+            }
+
+            return String.valueOf(sum);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     public static boolean cadastraDespesa(double value, String date, String title, String userId) {
         // api
