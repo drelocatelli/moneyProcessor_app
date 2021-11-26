@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -17,10 +19,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.moneyprocessor.Service.UserService;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PrincipalActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
+    private MaterialCalendarView calendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,27 @@ public class PrincipalActivity extends AppCompatActivity {
         // check user
         checkUserandLogout();
 
+        calendarView = findViewById(R.id.calendarView);
+
+        // calendar handling
+        calendarView.state().edit()
+                .setMinimumDate(CalendarDay.from(2015, 1, 1))
+        .commit();
+        calendarView.setTitleMonths(new CharSequence[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"});
+
+        calendarView.setWeekDayLabels(new CharSequence[] {"Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"});
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                String mes = String.valueOf(date.getMonth() + 1);
+                String dia = String.valueOf(date.getDay());
+                mes = (Integer.valueOf(mes) <= 9 ? "0"+mes : mes);
+                dia = (Integer.valueOf(dia) <= 9 ? "0"+dia : dia);
+
+                String data = String.format("%s/%s/%s", dia, mes, String.valueOf(date.getYear()));
+                System.out.println(data);
+            }
+        });
     }
 
     public void limpaCache() {
