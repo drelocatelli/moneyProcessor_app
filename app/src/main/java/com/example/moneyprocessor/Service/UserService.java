@@ -36,6 +36,38 @@ public class UserService {
         return false;
     }
 
+    public static String getUserIdByEmail(String email) {
+        // api
+
+        try {
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            String service = String.format("%s?email=eq.%s&select=id", webservice, email);
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response res = client.newCall(request).execute();
+
+            String responseData = res.body().string();
+
+            JSONObject resArray = (JSONObject) new JSONArray(responseData).get(0);
+            String response = resArray.getString("id");
+
+            return response;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     public static String getNomeByEmail(String email) {
         // api
 

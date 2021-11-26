@@ -22,7 +22,7 @@
             android:background="@android:color/holo_orange_dark">
 
             <EditText
-                android:id="@+id/valueInput"
+                android:id="@+id/valueIn"
                 android:layout_width="355dp"
                 android:layout_height="46dp"
                 android:background="#00FFFFFF"
@@ -44,20 +44,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editTextTextPersonName4"
-        android:layout_width="299dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#E6E6E6"
-        android:ems="10"
-        android:hint="Descrição"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/dateIn"
         android:layout_width="299dp"
         android:layout_height="52dp"
         android:layout_marginTop="120dp"
@@ -70,30 +57,30 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
+        android:id="@+id/titleIn"
         android:layout_width="299dp"
         android:layout_height="52dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="#FFE6E6E6"
         android:ems="10"
-        android:hint="Nome"
+        android:hint="Titulo"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/dateIn" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/salvarBtn"
         android:layout_width="194dp"
         android:layout_height="55dp"
+        android:layout_marginBottom="192dp"
         android:backgroundTint="#2196F3"
         android:text="Salvar"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
-        app:layout_constraintVertical_bias="0.123" />
+        app:layout_constraintTop_toBottomOf="@+id/titleIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
