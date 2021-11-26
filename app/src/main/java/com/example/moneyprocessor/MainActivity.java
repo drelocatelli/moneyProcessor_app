@@ -83,23 +83,15 @@ public class MainActivity extends IntroActivity {
 
     }
 
-    public void atualizaCache(SharedPreferences pref) {
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("nome", UserService.getNomeByEmail(pref.getString("email", null)));
-        editor.commit();
-    }
-
     public void verificaUsuarioLogado() {
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
 
         boolean hasCache = (pref.getString("email", null) != null) && (pref.getString("nome", null) != null);
+        String emailCached = pref.getString("email", null);
 
         if(hasCache) {
-            // atualiza cache
-            atualizaCache(pref);
-
-            // abre tela principal
-            if(UserService.getNomeByEmail(pref.getString("email", null)) != null){
+            // verifica cache e abre tela principal
+            if(UserService.getNomeByEmail(emailCached) != null){
                 startActivity(new Intent(this, PrincipalActivity.class));
                 finish();
             }

@@ -89,4 +89,36 @@
 
     </com.github.clans.fab.FloatingActionMenu>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:layout_marginTop="56dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="63dp"
+                android:layout_height="42dp"
+                android:backgroundTint="#005C5C5C"
+                android:outlineAmbientShadowColor="#00C84141"
+                android:outlineSpotShadowColor="#00C84141"
+                android:shadowColor="#00C84141"
+                android:text="Sair"
+                android:textColor="#554F4F"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

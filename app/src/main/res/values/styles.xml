@@ -9,7 +9,7 @@
     </style>
 
     <!-- basic theme without actionBar -->
-    <style name="despesaTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="basicTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>

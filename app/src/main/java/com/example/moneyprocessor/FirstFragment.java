@@ -1,12 +1,14 @@
 package com.example.moneyprocessor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +37,9 @@ public class FirstFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         nomeEl = view.findViewById(R.id.nomeEl);
-        nomeEl.setText(txtnomeEl);
+        if(txtnomeEl != null) {
+            nomeEl.setText(txtnomeEl);
+        }
 
 //        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
 //            @Override

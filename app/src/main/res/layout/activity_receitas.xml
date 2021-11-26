@@ -33,6 +33,7 @@
                 android:inputType="numberDecimal"
                 android:textAlignment="textEnd"
                 android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
                 android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +63,7 @@
         android:backgroundTint="#FFE6E6E6"
         android:ems="10"
         android:hint="Data"
-        android:inputType="textPersonName"
+        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

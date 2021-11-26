@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -34,11 +35,38 @@ public class PrincipalActivity extends AppCompatActivity {
         // set text from fragment child
         changeFragment();
 
+        // check user
+        checkUserandLogout();
+
+    }
+
+    public void limpaCache() {
+        SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+    public void checkUserandLogout() {
+        SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+        String nome = UserService.getNomeByEmail(pref.getString("email", null));
+        if(nome == null) {
+            startActivity(new Intent(PrincipalActivity.this, MainActivity.class));
+        }
+        // botao sair
+        Button btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                limpaCache();
+                startActivity(new Intent(PrincipalActivity.this, MainActivity.class));
+            }
+        });
     }
 
     public void changeFragment() {
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
-        String nome = pref.getString("nome", null);
+        String nome = UserService.getNomeByEmail(pref.getString("email", null));
 
         if(nome != null) {
             FirstFragment.txtnomeEl = String.format("Olá, %s", nome);
