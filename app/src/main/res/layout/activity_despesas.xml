@@ -51,7 +51,7 @@
         android:backgroundTint="#FFE6E6E6"
         android:ems="10"
         android:hint="Data"
-        android:inputType="date"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

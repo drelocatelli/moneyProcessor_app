@@ -41,21 +41,25 @@ public class TransactionService {
             Response res = client.newCall(request).execute();
             String responseData = res.body().string();
 
+            System.out.println("DESPESAS:::::::::::::::::::" + responseData);
+
             JSONArray resArray = new JSONArray(responseData);
-            JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
-
-            Gson gson= new Gson();
-            Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
-            List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
-
             int quantity = resArray.length();
 
-            double sum = 0;
+            double sum = 0.00;
 
-            for(TransactionDTO dto : obj) {
-                sum += Double.valueOf(dto.getValue());
+            if(quantity > 0) {
+
+                JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
+
+                Gson gson= new Gson();
+                Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
+                List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
+
+                for(TransactionDTO dto : obj) {
+                    sum += Double.valueOf(dto.getValue());
+                }
             }
-
             return String.valueOf(sum);
 
         } catch (Exception e) {
@@ -84,19 +88,27 @@ public class TransactionService {
             Response res = client.newCall(request).execute();
             String responseData = res.body().string();
 
+            System.out.println("RECEITAS:::::::::::::::::::" + responseData);
+
+
             JSONArray resArray = new JSONArray(responseData);
-            JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
-
-            Gson gson= new Gson();
-            Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
-            List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
-
             int quantity = resArray.length();
 
-            double sum = 0;
+            double sum = 0.00;
 
-            for(TransactionDTO dto : obj) {
-                sum += Double.valueOf(dto.getValue());
+            if(quantity > 0) {
+
+                JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
+
+                Gson gson= new Gson();
+                Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
+                List<TransactionDTO> obj = gson.fromJson(resArray.toString(),listType);
+
+
+                for(TransactionDTO dto : obj) {
+                    sum += Double.valueOf(dto.getValue());
+                }
+
             }
 
             return String.valueOf(sum);

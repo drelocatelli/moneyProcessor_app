@@ -11,12 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneyprocessor.Service.TransactionService;
 import com.example.moneyprocessor.Service.UserService;
@@ -27,12 +30,15 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class PrincipalActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private MaterialCalendarView calendarView;
     private TextView saldoEl;
+    private Button recarregar;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,15 @@ public class PrincipalActivity extends AppCompatActivity {
 
         // check user
         checkUserandLogout();
+
+        // recarregar
+        recarregar = findViewById(R.id.refreshBtn);
+        recarregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recarregar();
+            }
+        });
 
         // obtem saldo
         saldoEl = findViewById(R.id.saldoEl);
@@ -75,18 +90,40 @@ public class PrincipalActivity extends AppCompatActivity {
                 System.out.println(data);
             }
         });
+
+        // recycler view
+        recyclerView = findViewById(R.id.recyclerMovimentos);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+    }
+
+    public void recarregar() {
+        getSaldo();
+
+        Toast.makeText(PrincipalActivity.this, "Recarregou", Toast.LENGTH_SHORT).show();
     }
 
     public void getSaldo() {
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
         String userId = UserService.getUserIdByEmail(pref.getString("email", null));
 
-        double receitas = Double.parseDouble(TransactionService.getReceitasTotalByUserId(userId));
-        double despesas = Double.parseDouble(TransactionService.getDespesasTotalByUserId(userId));
+        try {
+            double receitas = Double.parseDouble(TransactionService.getReceitasTotalByUserId(userId));
+            double despesas = Double.parseDouble(TransactionService.getDespesasTotalByUserId(userId));
 
-        String saldo = String.format("Saldo: R$ %.2f", (receitas - despesas));
+            System.out.println("receitas::::::::::::" + receitas);
 
-        saldoEl.setText(saldo);
+            Double calculo = Double.valueOf(receitas - despesas);
+
+            String saldo = String.format("Saldo: R$ %.2f", calculo);
+
+            saldoEl.setText(saldo);
+        } catch (Exception e) {
+            saldoEl.setText("0.00");
+
+            Toast.makeText(PrincipalActivity.this, "Não foi possivel calcular saldo", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

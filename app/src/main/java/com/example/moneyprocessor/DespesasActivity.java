@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moneyprocessor.Models.Transaction;
 import com.example.moneyprocessor.Models.Usuario;
 import com.example.moneyprocessor.Service.TransactionService;
 import com.example.moneyprocessor.Service.UserService;
@@ -54,7 +55,7 @@ public class DespesasActivity extends AppCompatActivity {
             String userId = UserService.getUserIdByEmail(pref.getString("email", null));
 
             // sanitizacao
-            double value = Double.valueOf(valueIn.getText().toString());
+            double value = Double.valueOf(valueIn.getText().toString().replace(",","."));
             String date = dateIn.getText().toString();
             String title = titleIn.getText().toString();
 
@@ -63,7 +64,13 @@ public class DespesasActivity extends AppCompatActivity {
 
             // cadastra despesa
             if(validaDate) {
-                if(TransactionService.cadastraDespesa(value, date, title, userId)) {
+                Transaction transaction = new Transaction();
+                transaction.setTipo("d");
+                transaction.setTitulo(title);
+                transaction.setValor(value);
+                transaction.setDate(date);
+
+                if(TransactionService.cadastraDespesa(transaction.getValor(), transaction.getDate(), transaction.getTitulo(), userId)) {
                     // volta pra tela inicial
                     Toast.makeText(DespesasActivity.this, "Despesa cadastrada", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(DespesasActivity.this, PrincipalActivity.class));

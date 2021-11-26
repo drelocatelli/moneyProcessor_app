@@ -74,17 +74,17 @@
 
         <Button
             android:id="@+id/btnLogout"
-            android:layout_width="63dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="64dp"
+            android:layout_width="40dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="68dp"
             android:backgroundTint="#005C5C5C"
+            android:drawableLeft="@drawable/ic_baseline_power_settings_new_24"
             android:outlineAmbientShadowColor="#00C84141"
             android:outlineSpotShadowColor="#00C84141"
             android:shadowColor="#00C84141"
-            android:text="Sair"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.984"
+            app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,6 +104,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/refreshBtn"
+            android:layout_width="40dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="#005C5C5C"
+            android:drawableLeft="@drawable/ic_baseline_refresh_24"
+            android:outlineAmbientShadowColor="#00C84141"
+            android:outlineSpotShadowColor="#00C84141"
+            android:shadowColor="#00C84141"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

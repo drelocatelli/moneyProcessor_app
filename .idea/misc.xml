@@ -7,8 +7,10 @@
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_despesas.xml" value="0.24375" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_main.xml" value="0.2826086956521739" />
-        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_principal.xml" value="0.33" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_principal.xml" value="0.5" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/activity_receitas.xml" value="0.25" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/adapter_movimentacao.xml" value="0.33" />
+        <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/content_principal.xml" value="0.23641304347826086" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/intro_1.xml" value="0.2826086956521739" />
         <entry key="..\:/Users/Andressa/AndroidStudioProjects/moneyProcessor/app/src/main/res/layout/intro_4.xml" value="0.22010869565217392" />
@@ -25,7 +27,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.1" />
+        <option name="scale" value="0.18" />
       </ProjectState>
     </option>
   </component>

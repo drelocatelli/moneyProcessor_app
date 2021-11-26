@@ -53,7 +53,7 @@ public class ReceitasActivity extends AppCompatActivity {
             String userId = UserService.getUserIdByEmail(pref.getString("email", null));
 
             // sanitizacao
-            double value = Double.valueOf(valueIn.getText().toString());
+            double value = Double.valueOf(valueIn.getText().toString().replace(",","."));
             String date = dateIn.getText().toString();
             String title = titleIn.getText().toString();
 
