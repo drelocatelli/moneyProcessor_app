@@ -12,17 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moneyprocessor.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     String data1[], data2[], data3[], data4[];
+    Date date5[];
     Context context;
 
-    public MyAdapter(Context ct, String s1[], String s2[], String s3[], String s4[]) {
+    public MyAdapter(Context ct, String s1[], String s2[], String s3[], String s4[], Date d5[]) {
         context = ct;
         data1 = s1;
         data2 = s2;
         data3 = s3;
         data4 = s4;
+        date5 = d5;
     }
 
     @NonNull
@@ -36,12 +43,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textAdapterTitulo.setText(data1[position]);
-        holder.textAdapterValor.setText(data2[position]);
-        holder.textAdapterData.setText(data3[position]);
+
+        // data formatada
+        String dateStr = String.valueOf(date5[position]).substring(8, 16);
+
+        holder.textAdapterData.setText(dateStr);
         if(data4[position].equals("d")) {
-            holder.textAdapterValor.setTextColor(Color.parseColor("#567a0d"));
-        }else {
+            holder.textAdapterValor.setText("R$ -"+data2[position]);
             holder.textAdapterValor.setTextColor(Color.parseColor("#b75301"));
+        }else {
+            holder.textAdapterValor.setText("R$ "+data2[position]);
+            holder.textAdapterValor.setTextColor(Color.parseColor("#567a0d"));
         }
 
     }

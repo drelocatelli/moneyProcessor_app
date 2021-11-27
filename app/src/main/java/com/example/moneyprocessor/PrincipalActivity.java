@@ -30,6 +30,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -127,6 +128,8 @@ public class PrincipalActivity extends AppCompatActivity {
             String values[] = new String[transactions.size()];
             String dates[] = new String[transactions.size()];
             String type[] = new String[transactions.size()];
+            Date created_at[] = new Date[transactions.size()];
+
 
             for(int i = 0; i < transactions.size(); i++) {
                 System.out.println("transactions::::::::::::::::"+transactions.get(i).getTitle());
@@ -134,10 +137,11 @@ public class PrincipalActivity extends AppCompatActivity {
                 values[i] = transactions.get(i).getValue();
                 dates[i] = transactions.get(i).getDate();
                 type[i] = transactions.get(i).getType();
+                created_at[i] = transactions.get(i).getCreated_at();
             }
 
             if(titles != null && values != null && dates != null) {
-                myAdapter = new MyAdapter(this, titles, values, dates, type);
+                myAdapter = new MyAdapter(this, titles, values, dates, type, created_at);
                 recyclerView.setAdapter(myAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -145,7 +149,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         }else {
             String nulo[] = new String[]{""};
-            myAdapter = new MyAdapter(this, nulo, nulo, nulo, nulo);
+            myAdapter = new MyAdapter(this, nulo, nulo, nulo, nulo, new Date[]{});
             recyclerView.setAdapter(myAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -154,6 +158,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     public void recarregar() {
         getSaldo();
+        getTransactions("current");
 
         Toast.makeText(PrincipalActivity.this, "Recarregou", Toast.LENGTH_SHORT).show();
     }

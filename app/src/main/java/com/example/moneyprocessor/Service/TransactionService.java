@@ -167,11 +167,14 @@ public class TransactionService {
     public static boolean cadastraDespesa(double value, String date, String title, String userId) {
         // api
 
+        String valor = String.valueOf(String.format("%.2f", value)).replace(",", ".");
+
         try {
+
             OkHttpClient client = new OkHttpClient().newBuilder().build();
             MediaType mediaType = MediaType.parse("application/json");
 
-            String params = String.format(" {\"date\": \"%s\", \"title\": \"%s\", \"value\": \"%.2f\", \"type\": \"d\", \"user_id\": \"%s\"} ", date, title, value, userId);
+            String params = String.format(" {\"date\": \"%s\", \"title\": \"%s\", \"value\": \"%s\", \"type\": \"d\", \"user_id\": \"%s\"} ", date, title, valor, userId);
             RequestBody body = RequestBody.create(mediaType, params);
             Request request = new Request.Builder()
                     .url(webservice)
@@ -202,11 +205,13 @@ public class TransactionService {
     public static boolean cadastraReceita(double value, String date, String title, String userId) {
         // api
 
+        String valor = String.valueOf(String.format("%.2f", value)).replace(",", ".");
+
         try {
             OkHttpClient client = new OkHttpClient().newBuilder().build();
             MediaType mediaType = MediaType.parse("application/json");
 
-            String params = String.format(" {\"date\": \"%s\", \"title\": \"%s\", \"value\": \"%.2f\", \"type\": \"r\", \"user_id\": \"%s\"} ", date, title, value, userId);
+            String params = String.format(" {\"date\": \"%s\", \"title\": \"%s\", \"value\": \"%s\", \"type\": \"r\", \"user_id\": \"%s\"} ", date, title, valor, userId);
             RequestBody body = RequestBody.create(mediaType, params);
             Request request = new Request.Builder()
                     .url(webservice)

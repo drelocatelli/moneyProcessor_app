@@ -1,11 +1,22 @@
 package com.example.moneyprocessor.DTO;
 
+import java.util.Date;
+
 public class TransactionDTO {
 
     private String value;
     private String date;
     private String title;
     private String type;
+    private Date created_at;
+
+    public Date getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
 
     public String getDate() {
         return date;

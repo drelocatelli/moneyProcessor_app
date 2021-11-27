@@ -57,7 +57,7 @@ public class ReceitasActivity extends AppCompatActivity {
             String date = dateIn.getText().toString();
             String title = titleIn.getText().toString();
 
-            String regexDate = "[\\d.\\/]*";
+            String regexDate = "[\\d.\\/](?:\\d.*){4}";
             boolean validaDate = Pattern.compile(regexDate).matcher(date).matches();
 
             // cadastra receita
