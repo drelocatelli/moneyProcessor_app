@@ -1,6 +1,7 @@
 package com.example.moneyprocessor.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,15 @@ import com.example.moneyprocessor.R;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    String data1[], data2[], data3[];
+    String data1[], data2[], data3[], data4[];
     Context context;
 
-    public MyAdapter(Context ct, String s1[], String s2[], String s3[]) {
+    public MyAdapter(Context ct, String s1[], String s2[], String s3[], String s4[]) {
         context = ct;
         data1 = s1;
         data2 = s2;
         data3 = s3;
+        data4 = s4;
     }
 
     @NonNull
@@ -36,6 +38,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.textAdapterTitulo.setText(data1[position]);
         holder.textAdapterValor.setText(data2[position]);
         holder.textAdapterData.setText(data3[position]);
+        if(data4[position].equals("d")) {
+            holder.textAdapterValor.setTextColor(Color.parseColor("#567a0d"));
+        }else {
+            holder.textAdapterValor.setTextColor(Color.parseColor("#b75301"));
+        }
 
     }
 

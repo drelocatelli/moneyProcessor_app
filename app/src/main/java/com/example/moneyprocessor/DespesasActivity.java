@@ -59,7 +59,7 @@ public class DespesasActivity extends AppCompatActivity {
             String date = dateIn.getText().toString();
             String title = titleIn.getText().toString();
 
-            String regexDate = "^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$";
+            String regexDate = "[\\d.\\/]*";
             boolean validaDate = Pattern.compile(regexDate).matcher(date).matches();
 
             // cadastra despesa
@@ -78,7 +78,7 @@ public class DespesasActivity extends AppCompatActivity {
                     Toast.makeText(DespesasActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }
             }else {
-                Toast.makeText(DespesasActivity.this, "Insira uma data válida dd/mm/aaaa", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DespesasActivity.this, "Insira uma data válida MM/aaaa", Toast.LENGTH_SHORT).show();
             }
 
         }else {

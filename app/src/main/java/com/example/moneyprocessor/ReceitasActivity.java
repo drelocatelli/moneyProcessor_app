@@ -57,7 +57,7 @@ public class ReceitasActivity extends AppCompatActivity {
             String date = dateIn.getText().toString();
             String title = titleIn.getText().toString();
 
-            String regexDate = "^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$";
+            String regexDate = "[\\d.\\/]*";
             boolean validaDate = Pattern.compile(regexDate).matcher(date).matches();
 
             // cadastra receita
@@ -70,7 +70,7 @@ public class ReceitasActivity extends AppCompatActivity {
                     Toast.makeText(ReceitasActivity.this, "Ocorreu um erro!", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(ReceitasActivity.this, "Insira uma data válida dd/mm/aaaa", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ReceitasActivity.this, "Insira uma data válida MM/aaaa", Toast.LENGTH_SHORT).show();
             }
 
         } else {

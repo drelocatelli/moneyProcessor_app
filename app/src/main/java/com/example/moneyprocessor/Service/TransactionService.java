@@ -22,14 +22,14 @@ public class TransactionService {
 
     private static String webservice = String.format("%s/rest/v1/transaction", DBConnection.dbHost);
 
-    public static List<TransactionDTO> getAllTransactions(String id) {
+    public static List<TransactionDTO> getAllTransactions(String id, String date) {
         // api
 
         try {
 
             OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-            String service = String.format("%s?user_id=eq.%s&select=*", webservice, id);
+            String service = String.format("%s?user_id=eq.%s&date=eq.%s&select=*", webservice, id, date);
 
             Request request = new Request.Builder()
                     .url(service)
@@ -41,6 +41,7 @@ public class TransactionService {
             Response res = client.newCall(request).execute();
             String responseData = res.body().string();
 
+            System.out.println(service);
             System.out.println("all transactions::::::::::::::" + responseData);
 
             JSONArray resArray = new JSONArray(responseData);

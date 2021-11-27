@@ -28,6 +28,9 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
@@ -92,54 +95,65 @@ public class PrincipalActivity extends AppCompatActivity {
                 String data = String.format("%s/%s/%s", dia, mes, String.valueOf(date.getYear()));
 
                 mesAnoSelecionado = String.valueOf((date.getMonth()+1 <= 9 ? "0"+(date.getMonth()+1) : (date.getMonth()+1)) + "/" + date.getYear());
-                System.out.println(mesAnoSelecionado);
+                getTransactions(mesAnoSelecionado);
             }
         });
 
         // get transactions
         recyclerView = findViewById(R.id.recyclerView);
-        getTransactions();
+
+        getTransactions("current");
 
     }
 
-    public void getTransactions() {
+    public void getTransactions(String date) {
+
+        if(date.equals("current")) {
+            SimpleDateFormat dateCurrent = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar calendar = new GregorianCalendar();
+            date = String.valueOf(calendar.get(Calendar.MONTH)+1) + "/" + String.valueOf(calendar.get(Calendar.YEAR));
+        }
+
         SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
         String userId = UserService.getUserIdByEmail(pref.getString("email", null));
 
-        List<TransactionDTO> transactions = TransactionService.getAllTransactions(userId);
+        List<TransactionDTO> transactions = TransactionService.getAllTransactions(userId, date);
+        MyAdapter myAdapter;
 
         if(transactions != null && !transactions.isEmpty()) {
-
-            MyAdapter myAdapter;
 
             // data
             String titles[] = new String[transactions.size()];
             String values[] = new String[transactions.size()];
             String dates[] = new String[transactions.size()];
-
-            System.out.println("=================================== nullpex");
+            String type[] = new String[transactions.size()];
 
             for(int i = 0; i < transactions.size(); i++) {
-                System.out.println("transaction:::::::::::::"+transactions.get(i).getTitle());
+                System.out.println("transactions::::::::::::::::"+transactions.get(i).getTitle());
                 titles[i] = transactions.get(i).getTitle();
                 values[i] = transactions.get(i).getValue();
                 dates[i] = transactions.get(i).getDate();
+                type[i] = transactions.get(i).getType();
             }
 
             if(titles != null && values != null && dates != null) {
-                myAdapter = new MyAdapter(this, titles, values, dates);
+                myAdapter = new MyAdapter(this, titles, values, dates, type);
                 recyclerView.setAdapter(myAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
             }
 
+        }else {
+            String nulo[] = new String[]{""};
+            myAdapter = new MyAdapter(this, nulo, nulo, nulo, nulo);
+            recyclerView.setAdapter(myAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
     }
 
     public void recarregar() {
         getSaldo();
-        getTransactions();
 
         Toast.makeText(PrincipalActivity.this, "Recarregou", Toast.LENGTH_SHORT).show();
     }

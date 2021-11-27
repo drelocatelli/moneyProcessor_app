@@ -50,7 +50,7 @@
         android:layout_marginTop="120dp"
         android:backgroundTint="#FFE6E6E6"
         android:ems="10"
-        android:hint="Data"
+        android:hint="MM/AAAA"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
