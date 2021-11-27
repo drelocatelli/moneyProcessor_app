@@ -21,15 +21,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     String data1[], data2[], data3[], data4[];
     Date date5[];
+    long id[];
     Context context;
 
-    public MyAdapter(Context ct, String s1[], String s2[], String s3[], String s4[], Date d5[]) {
+    public MyAdapter(Context ct, String s1[], String s2[], String s3[], String s4[], Date d5[], long id[]) {
         context = ct;
         data1 = s1;
         data2 = s2;
         data3 = s3;
         data4 = s4;
         date5 = d5;
+        this.id = id;
     }
 
     @NonNull
@@ -42,20 +44,32 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textAdapterTitulo.setText(data1[position]);
 
-        // data formatada
-        String dateStr = String.valueOf(date5[position]).substring(8, 16);
-
-        holder.textAdapterData.setText(dateStr);
-        if(data4[position].equals("d")) {
-            holder.textAdapterValor.setText("R$ -"+data2[position]);
-            holder.textAdapterValor.setTextColor(Color.parseColor("#b75301"));
+        if((id.length) > 0){
+            holder.textAdapterTitulo.setText(data1[position]);
+            // data formatada
+            String dateStr = String.valueOf(date5[position]).substring(8, 16);
+            holder.textAdapterId.setText(String.valueOf(id[position]));
+            holder.textAdapterData.setText(dateStr);
+            if(data4[position].equals("d")) {
+                holder.textAdapterValor.setText("R$ -"+data2[position]);
+                holder.textAdapterValor.setTextColor(Color.parseColor("#b75301"));
+            }else {
+                holder.textAdapterValor.setText("R$ "+data2[position]);
+                holder.textAdapterValor.setTextColor(Color.parseColor("#567a0d"));
+            }
         }else {
-            holder.textAdapterValor.setText("R$ "+data2[position]);
-            holder.textAdapterValor.setTextColor(Color.parseColor("#567a0d"));
+            holder.textAdapterTitulo.setText("");
+            holder.textAdapterId.setText("");
+            holder.textAdapterData.setText("");
+            holder.textAdapterValor.setText("");
+
         }
 
+    }
+
+    public String getItemByPosition(@NonNull MyViewHolder holder, int position) {
+        return holder.textAdapterId.getText().toString();
     }
 
     @Override
@@ -65,10 +79,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textAdapterTitulo, textAdapterValor, textAdapterData;
+        TextView textAdapterTitulo, textAdapterValor, textAdapterData, textAdapterId;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            textAdapterId = itemView.findViewById(R.id.idEl);
             textAdapterTitulo = itemView.findViewById(R.id.textAdapterTitulo);
             textAdapterValor = itemView.findViewById(R.id.textAdapterValor);
             textAdapterData = itemView.findViewById(R.id.textAdapterData);

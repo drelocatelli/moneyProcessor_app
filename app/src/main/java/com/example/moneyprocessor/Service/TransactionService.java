@@ -238,4 +238,37 @@ public class TransactionService {
         }
     }
 
+    public static boolean removeTransaction(String userId, String transactionId) {
+
+        // api
+        String service = String.format("%s?user_id=eq.%s&id=eq.%s&select=*", webservice, userId, transactionId);
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            MediaType mediaType = MediaType.parse("application/json");
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .delete()
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            System.out.println("DELETE:::::::::::::::::"+response.code());
+            System.out.println(webservice);
+
+            if(response.code() == 201) {
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }

@@ -1,11 +1,15 @@
 package com.example.moneyprocessor;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +47,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private Button recarregar;
     private RecyclerView recyclerView;
     private String mesAnoSelecionado;
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +110,69 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         getTransactions("current");
+        swipe();
 
+    }
+
+    public void swipe() {
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                // dragAndDrop inativo
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+//                int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.END;
+                int swipeFlags = ItemTouchHelper.LEFT;
+
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                System.out.println("item foi arrastado:"+ direction);
+                deleteTransaction(viewHolder);
+            }
+        }; /// nao esquecer do ;
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(recyclerView);
+    }
+
+    public void deleteTransaction(final RecyclerView.ViewHolder viewHolder) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Excluir transação da conta");
+        alertDialog.setMessage("Tem certeza que deseja excluir?");
+        alertDialog.setCancelable(true);
+
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int position = viewHolder.getAdapterPosition();
+                // get transaction id by swipe
+                String transactionId = myAdapter.getItemByPosition((MyAdapter.MyViewHolder) viewHolder, position);
+                // get user logged id
+                SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+                String userId = UserService.getUserIdByEmail(pref.getString("email", null));
+
+                // remove transaction in db
+                TransactionService.removeTransaction(userId, transactionId);
+                recarregar();
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(PrincipalActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                recarregar();
+            }
+        });
+
+        AlertDialog alert = alertDialog.create();
+        alert.show();
     }
 
     public void getTransactions(String date) {
@@ -119,11 +187,11 @@ public class PrincipalActivity extends AppCompatActivity {
         String userId = UserService.getUserIdByEmail(pref.getString("email", null));
 
         List<TransactionDTO> transactions = TransactionService.getAllTransactions(userId, date);
-        MyAdapter myAdapter;
 
         if(transactions != null && !transactions.isEmpty()) {
 
             // data
+            long id[] = new long[transactions.size()];
             String titles[] = new String[transactions.size()];
             String values[] = new String[transactions.size()];
             String dates[] = new String[transactions.size()];
@@ -132,7 +200,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
 
             for(int i = 0; i < transactions.size(); i++) {
-                System.out.println("transactions::::::::::::::::"+transactions.get(i).getTitle());
+                id[i] = transactions.get(i).getId();
                 titles[i] = transactions.get(i).getTitle();
                 values[i] = transactions.get(i).getValue();
                 dates[i] = transactions.get(i).getDate();
@@ -141,7 +209,7 @@ public class PrincipalActivity extends AppCompatActivity {
             }
 
             if(titles != null && values != null && dates != null) {
-                myAdapter = new MyAdapter(this, titles, values, dates, type, created_at);
+                myAdapter = new MyAdapter(this, titles, values, dates, type, created_at, id);
                 recyclerView.setAdapter(myAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -149,7 +217,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         }else {
             String nulo[] = new String[]{""};
-            myAdapter = new MyAdapter(this, nulo, nulo, nulo, nulo, new Date[]{});
+            myAdapter = new MyAdapter(this, nulo, nulo, nulo, nulo, new Date[]{}, new long[]{});
             recyclerView.setAdapter(myAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -158,7 +226,8 @@ public class PrincipalActivity extends AppCompatActivity {
 
     public void recarregar() {
         getSaldo();
-        getTransactions("current");
+        String currentCalendar = String.valueOf((calendarView.getCurrentDate().getMonth()+1) + "/" + calendarView.getCurrentDate().getYear());
+        getTransactions(currentCalendar);
 
         Toast.makeText(PrincipalActivity.this, "Recarregou", Toast.LENGTH_SHORT).show();
     }

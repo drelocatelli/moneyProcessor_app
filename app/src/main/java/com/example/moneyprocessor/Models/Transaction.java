@@ -2,10 +2,19 @@ package com.example.moneyprocessor.Models;
 
 public class Transaction {
 
+    private long id;
     private String tipo;
     private double valor;
     private String titulo;
     private String date;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getDate() {
         return date;

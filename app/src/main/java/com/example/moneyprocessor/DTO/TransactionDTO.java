@@ -4,11 +4,20 @@ import java.util.Date;
 
 public class TransactionDTO {
 
+    private long id;
     private String value;
     private String date;
     private String title;
     private String type;
     private Date created_at;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Date getCreated_at() {
         return created_at;
