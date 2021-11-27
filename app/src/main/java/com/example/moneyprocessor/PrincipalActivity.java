@@ -4,16 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,16 +20,15 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moneyprocessor.DTO.TransactionDTO;
 import com.example.moneyprocessor.Service.TransactionService;
 import com.example.moneyprocessor.Service.UserService;
+import com.example.moneyprocessor.adapter.MyAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -39,6 +37,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private TextView saldoEl;
     private Button recarregar;
     private RecyclerView recyclerView;
+    private String mesAnoSelecionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +77,10 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView.setTitleMonths(new CharSequence[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"});
 
         calendarView.setWeekDayLabels(new CharSequence[] {"Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"});
+
+        CalendarDay dataAtual = calendarView.getCurrentDate();
+        mesAnoSelecionado = String.valueOf((dataAtual.getMonth()+1 <= 9 ? "0"+(dataAtual.getMonth()+1) : (dataAtual.getMonth()+1)) + "/" + dataAtual.getYear());
+
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
@@ -87,19 +90,56 @@ public class PrincipalActivity extends AppCompatActivity {
                 dia = (Integer.valueOf(dia) <= 9 ? "0"+dia : dia);
 
                 String data = String.format("%s/%s/%s", dia, mes, String.valueOf(date.getYear()));
-                System.out.println(data);
+
+                mesAnoSelecionado = String.valueOf((date.getMonth()+1 <= 9 ? "0"+(date.getMonth()+1) : (date.getMonth()+1)) + "/" + date.getYear());
+                System.out.println(mesAnoSelecionado);
             }
         });
 
-        // recycler view
-        recyclerView = findViewById(R.id.recyclerMovimentos);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        // get transactions
+        recyclerView = findViewById(R.id.recyclerView);
+        getTransactions();
+
+    }
+
+    public void getTransactions() {
+        SharedPreferences pref = getSharedPreferences("userCache", MODE_PRIVATE);
+        String userId = UserService.getUserIdByEmail(pref.getString("email", null));
+
+        List<TransactionDTO> transactions = TransactionService.getAllTransactions(userId);
+
+        if(transactions != null && !transactions.isEmpty()) {
+
+            MyAdapter myAdapter;
+
+            // data
+            String titles[] = new String[transactions.size()];
+            String values[] = new String[transactions.size()];
+            String dates[] = new String[transactions.size()];
+
+            System.out.println("=================================== nullpex");
+
+            for(int i = 0; i < transactions.size(); i++) {
+                System.out.println("transaction:::::::::::::"+transactions.get(i).getTitle());
+                titles[i] = transactions.get(i).getTitle();
+                values[i] = transactions.get(i).getValue();
+                dates[i] = transactions.get(i).getDate();
+            }
+
+            if(titles != null && values != null && dates != null) {
+                myAdapter = new MyAdapter(this, titles, values, dates);
+                recyclerView.setAdapter(myAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            }
+
+        }
+
     }
 
     public void recarregar() {
         getSaldo();
+        getTransactions();
 
         Toast.makeText(PrincipalActivity.this, "Recarregou", Toast.LENGTH_SHORT).show();
     }
@@ -111,8 +151,6 @@ public class PrincipalActivity extends AppCompatActivity {
         try {
             double receitas = Double.parseDouble(TransactionService.getReceitasTotalByUserId(userId));
             double despesas = Double.parseDouble(TransactionService.getDespesasTotalByUserId(userId));
-
-            System.out.println("receitas::::::::::::" + receitas);
 
             Double calculo = Double.valueOf(receitas - despesas);
 

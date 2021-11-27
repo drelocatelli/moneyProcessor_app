@@ -57,18 +57,19 @@
                 android:layout_height="50dp"
                 app:mcv_tileSize="50dp"
                 fab:mcv_selectionColor="@color/colorAccent"
-                fab:mcv_showOtherDates="all">
+                fab:mcv_showOtherDates="all"
+                tools:ignore="MissingConstraints">
 
             </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerMovimentos"
-                android:layout_width="338dp"
-                android:layout_height="499dp"
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="518dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+                app:layout_constraintTop_toBottomOf="@+id/calendarView"
+                tools:layout_editor_absoluteX="21dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

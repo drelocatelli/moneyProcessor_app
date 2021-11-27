@@ -22,6 +22,49 @@ public class TransactionService {
 
     private static String webservice = String.format("%s/rest/v1/transaction", DBConnection.dbHost);
 
+    public static List<TransactionDTO> getAllTransactions(String id) {
+        // api
+
+        try {
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+
+            String service = String.format("%s?user_id=eq.%s&select=*", webservice, id);
+
+            Request request = new Request.Builder()
+                    .url(service)
+                    .addHeader("apikey", DBConnection.apiKey)
+                    .addHeader("Authorization", DBConnection.dbJWT)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .build();
+            Response res = client.newCall(request).execute();
+            String responseData = res.body().string();
+
+            System.out.println("all transactions::::::::::::::" + responseData);
+
+            JSONArray resArray = new JSONArray(responseData);
+            int quantity = resArray.length();
+
+            if(quantity > 0) {
+                JSONObject resObj = (JSONObject) new JSONArray(responseData).get(0);
+
+                Gson gson= new Gson();
+                Type listType = new TypeToken<ArrayList<TransactionDTO>>(){}.getType();
+                List<TransactionDTO> list = gson.fromJson(resArray.toString(),listType);
+
+                return list;
+            }
+
+            return null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     public static String getDespesasTotalByUserId(String id) {
         // api
 
